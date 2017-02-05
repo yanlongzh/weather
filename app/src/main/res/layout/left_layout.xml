@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/layout_left"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/blue">
+        <Button
+            android:layout_marginLeft="10dp"
+        android:id="@+id/leftlist_button"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@mipmap/ic_back"
+        android:layout_centerVertical="true"
+        />
+        <TextView
+            android:id="@+id/leftlist_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_centerInParent="true"
+            android:textSize="20sp"
+            android:text="@string/zhogngguo"
+            android:layout_marginLeft="125dp"
+        />
+</RelativeLayout>
+    <ListView
+        android:background="@color/white"
+        android:id="@+id/left_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@drawable/leftlist_divider"/>
+</LinearLayout>
