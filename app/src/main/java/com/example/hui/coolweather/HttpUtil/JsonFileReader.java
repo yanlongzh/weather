@@ -10,6 +10,7 @@ import java.io.InputStream;
 
 /**
  * Created by yanlongzh on 2017/2/3.
+ * 读取assets省市列表
  */
     public class JsonFileReader {
         public static String getJson(Context context, String fileName) {
