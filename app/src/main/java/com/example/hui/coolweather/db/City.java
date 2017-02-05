@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by yanlongzh on 2017/1/12.
+ * city 实体类
  */
 
 public class City {
