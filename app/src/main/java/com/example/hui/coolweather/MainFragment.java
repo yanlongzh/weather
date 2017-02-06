@@ -63,14 +63,18 @@ public class MainFragment extends Fragment {
     private void initFragment() {
         SharedPreferences shared = getActivity().getSharedPreferences("weatherLocation",Context.MODE_PRIVATE);
         String jsonString = shared.getString("weather",null);
-        final String district = shared.getString("district",null);
-        if(jsonString!=null&&district!=null){
-            requstWeather(district,jsonString);
+        String listText = shared.getString("district",null);
+        if(jsonString!=null&&listText!=null){
+            requstWeather(listText,jsonString);
         }
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                initData(district);
+                SharedPreferences shared = getActivity().getSharedPreferences("weatherLocation",Context.MODE_PRIVATE);
+                String district = shared.getString("district",null);
+                if (district != null){
+                    initData(district);
+                }
             }
         });
     }
@@ -110,11 +114,16 @@ public class MainFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        SharedPreferences sharedPreferences = getActivity().
-                                getSharedPreferences("weatherLocation", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("weather",jsonString).putString("district",listText).apply();
-                        requstWeather(listText,jsonString);
+                        if(jsonString!=null) {
+                            SharedPreferences sharedPreferences = getActivity().
+                                    getSharedPreferences("weatherLocation", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("weather", jsonString).putString("district", listText)
+                                    .apply();
+                            requstWeather(listText, jsonString);
+                        }else{
+                            Toast.makeText(getActivity(), "获取天气信息失败", Toast.LENGTH_SHORT).show();
+                        }
                         refreshLayout.setRefreshing(false);
                     }
                 });
