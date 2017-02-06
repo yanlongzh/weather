@@ -5,15 +5,15 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.hui.coolweather.MainActivity">
+    tools:context="com.example.hui.coolweather.activity.MainActivity">
     <fragment
-        android:name="com.example.hui.coolweather.MainFragment"
+        android:name="com.example.hui.coolweather.fragment.MainFragment"
         android:id="@+id/main_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <fragment
         android:layout_gravity="start"
-        android:name="com.example.hui.coolweather.HttpUtil.LeftFragment"
+        android:name="com.example.hui.coolweather.fragment.LeftFragment"
         android:id="@+id/left_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

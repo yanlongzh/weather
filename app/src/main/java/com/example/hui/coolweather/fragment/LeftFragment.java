@@ -1,4 +1,4 @@
-package com.example.hui.coolweather.HttpUtil;
+package com.example.hui.coolweather.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.hui.coolweather.HttpUtil.HandlerJson;
+import com.example.hui.coolweather.HttpUtil.JsonFileReader;
 import com.example.hui.coolweather.R;
 import com.example.hui.coolweather.db.CoolWeatherDB;
 import com.example.hui.coolweather.db.LocationBean;

@@ -1,4 +1,4 @@
-package com.example.hui.coolweather;
+package com.example.hui.coolweather.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.hui.coolweather.HttpUtil.HandlerJson;
 import com.example.hui.coolweather.HttpUtil.HttpUtil;
+import com.example.hui.coolweather.R;
 import com.example.hui.coolweather.db.WeatherBean;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.example.hui.coolweather;
+package com.example.hui.coolweather.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.example.hui.coolweather.HttpUtil.LeftFragment;
+import com.example.hui.coolweather.R;
+import com.example.hui.coolweather.fragment.LeftFragment;
+import com.example.hui.coolweather.fragment.MainFragment;
 
 public class MainActivity extends AppCompatActivity implements LeftFragment.ListItemListener{
     private LeftFragment.ListItemListener mListener;
