@@ -17,9 +17,12 @@ import android.widget.Toast;
 import com.example.hui.coolweather.HttpUtil.HandlerJson;
 import com.example.hui.coolweather.HttpUtil.HttpUtil;
 import com.example.hui.coolweather.R;
-import com.example.hui.coolweather.db.WeatherBean;
+import com.example.hui.coolweather.db.WeatherLocationBean;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -43,7 +46,7 @@ public class MainFragment extends Fragment {
     private TextView exercise_advice;
     private View view;
     private LinearLayout mLayout;
-    private TextView data_tv;
+    private TextView data_tv,wind_tv;
     private TextView temper_tv;
     private TextView weather_tv;
     private SwipeRefreshLayout refreshLayout;
@@ -66,7 +69,8 @@ public class MainFragment extends Fragment {
         String jsonString = shared.getString("weather",null);
         String listText = shared.getString("district",null);
         if(jsonString!=null&&listText!=null){
-            requstWeather(listText,jsonString);
+            refreshLayout.setRefreshing(true);
+            initData(listText);
         }
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -97,7 +101,7 @@ public class MainFragment extends Fragment {
 
 
     public void initData(final String listText) {
-        String url ="http://v.juhe.cn/weather/index?format=2&cityname="+listText+"&key=129b3b34d3bcabae1e3e86b76e88d878";
+        String url ="http://api.jisuapi.com/weather/query?appkey=d4b8a9a7cb555e9f&city="+listText;
         HttpUtil.sendHttpRequst(url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -108,7 +112,6 @@ public class MainFragment extends Fragment {
                     }
                 });
             }
-
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 final String jsonString = response.body().string();
@@ -133,29 +136,47 @@ public class MainFragment extends Fragment {
     }
 
     public void requstWeather(String listText,String jsonString){
-        WeatherBean weatherBean =  HandlerJson.getWeather(jsonString);
-        WeatherBean.ResultBean.SkBean skBean = weatherBean.getResult().getSk();
-        WeatherBean.ResultBean.TodayBean todayBean =weatherBean.getResult().getToday();
-        List<WeatherBean.ResultBean.FutureBean> futureBeans = weatherBean.getResult().getFuture();
-        title_tv.setText(listText);
-        title_time.setText(skBean.getTime());
-        now_temper.setText(skBean.getTemp()+"℃");
-        now_cloud.setText(todayBean.getWeather());
+        WeatherLocationBean weatherBean =  HandlerJson.getWeather(jsonString);
+        WeatherLocationBean.ResultBean resultBean = weatherBean.getResult();
+        title_tv.setText(resultBean.getCity());
+        title_time.setText(formatTime(resultBean.getUpdatetime()));
+        now_temper.setText(resultBean.getTemp()+"℃");
+        now_cloud.setText(resultBean.getWeather());
+        List<WeatherLocationBean.ResultBean.IndexBean> indexBean = resultBean.getIndex();
+        List<WeatherLocationBean.ResultBean.DailyBean> dailyBeanList = resultBean.getDaily();
         mLayout.removeAllViews();
-        for(WeatherBean.ResultBean.FutureBean futureBean:futureBeans){
+        for(WeatherLocationBean.ResultBean.DailyBean dailyBean:dailyBeanList){
+            WeatherLocationBean.ResultBean.DailyBean.DayBean dayBean = dailyBean.getDay();
             View viewlist = LayoutInflater.from(getActivity()).inflate(R.layout.forecast_item,null);
             data_tv = (TextView) viewlist.findViewById(R.id.data_tv);
             temper_tv = (TextView) viewlist.findViewById(R.id.temper_tv);
             weather_tv = (TextView) viewlist.findViewById(R.id.weather_tv);
-            data_tv.setText(futureBean.getDate());
-            temper_tv.setText(futureBean.getTemperature());
-            weather_tv.setText(futureBean.getWeather());
+            wind_tv = (TextView) viewlist.findViewById(R.id.wind_tv);
+            data_tv.setText(dailyBean.getDate());
+            temper_tv.setText(dayBean.getTemphigh()+"℃");
+            weather_tv.setText(dayBean.getWeather());
+            wind_tv.setText(dayBean.getWindpower());
             mLayout.addView(viewlist);
         }
-        quality_humidity.setText(skBean.getHumidity());
-        quality_uv.setText(todayBean.getUv_index());
-        dressing_advice.setText("穿衣建议："+todayBean.getDressing_advice());
-        travel_advice.setText("旅游建议："+todayBean.getTravel_index());
-        exercise_advice.setText("锻炼建议："+todayBean.getExercise_index());
+        quality_humidity.setText(resultBean.getHumidity());
+        quality_uv.setText(resultBean.getWindpower());
+        List<WeatherLocationBean.ResultBean.IndexBean> index = resultBean.getIndex();
+
+        dressing_advice.setText("空调指数："+index.get(0).getDetail());
+        travel_advice.setText("感冒指数："+index.get(3).getDetail());
+        exercise_advice.setText("锻炼建议："+index.get(1).getDetail());
+    }
+    private String formatTime(String time){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format1 = new SimpleDateFormat("HH:mm");
+        Date date = null;
+        String string  = null;
+        try {
+            date = format.parse(time);
+            string = format1.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return string;
     }
 }

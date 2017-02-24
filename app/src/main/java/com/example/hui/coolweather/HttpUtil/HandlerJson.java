@@ -1,6 +1,6 @@
 package com.example.hui.coolweather.HttpUtil;
 
-import com.example.hui.coolweather.db.WeatherBean;
+import com.example.hui.coolweather.db.WeatherLocationBean;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
@@ -50,9 +50,9 @@ public class HandlerJson {
         return list;
     }
 
-    public static WeatherBean getWeather(String weather){
+    public static WeatherLocationBean getWeather(String weather){
         Gson gson = new Gson();
-        WeatherBean weatherBean = gson.fromJson(weather,WeatherBean.class);
+        WeatherLocationBean weatherBean = gson.fromJson(weather,WeatherLocationBean.class);
         return  weatherBean;
     }
 }
