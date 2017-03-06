@@ -1,6 +1,7 @@
 package com.example.hui.coolweather.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import com.example.hui.coolweather.R;
 import com.example.hui.coolweather.fragment.LeftFragment;
 import com.example.hui.coolweather.fragment.MainFragment;
+import com.example.hui.coolweather.service.WeatherService;
 
 public class MainActivity extends AppCompatActivity implements LeftFragment.ListItemListener{
     private LeftFragment.ListItemListener mListener;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements LeftFragment.List
         setContentView(R.layout.activity_main);
         initView();
         isFristIn();
+        startService(new Intent(this, WeatherService.class));
     }
 
     private void initView() {

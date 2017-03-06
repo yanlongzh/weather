@@ -50,16 +50,15 @@ public class LeftFragment extends Fragment implements AdapterView.OnItemClickLis
     private DrawerLayout mDrawerLayout;
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.left_layout,container,false);
         leftlist_tv = (TextView)view.findViewById(R.id.leftlist_tv);
         mleftbutton = (Button)view.findViewById(R.id.leftlist_button);
         mleftlist = (ListView)view.findViewById(R.id.left_listview);
         return view;
     }
-    @Nullable
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.activity_main);
         mWeatherDB = CoolWeatherDB.getInstance(getActivity());
@@ -87,6 +86,13 @@ public class LeftFragment extends Fragment implements AdapterView.OnItemClickLis
         mListener = (ListItemListener) context;
     }
 
+    /**
+     * 地区查询接口回调
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if(CURRENT_LEVEN==LEVEL_PROVINCE){
@@ -106,12 +112,15 @@ public class LeftFragment extends Fragment implements AdapterView.OnItemClickLis
 
     }
 
-    /*查询地区*/
+    /**
+     * 查询全部区域
+     * @param textDistrict
+     */
     private void queryDistrict( String textDistrict){
         mDataList.clear();
         leftlist_tv.setText(textDistrict);
-        String JsonDistrst= JsonFileReader.getJson(getActivity(),"location.txt");
-        List<Map<String,String>> mlist = HandlerJson.getCity(JsonDistrst, "result");
+        String jsonDjistrst= JsonFileReader.getJson(getActivity(),"location.txt");
+        List<Map<String,String>> mlist = HandlerJson.getCity(jsonDjistrst, "result");
         for(int i=0;i<mlist.size();i++){
             if(textDistrict.equals(mlist.get(i).get("city"))){
                 String district =  mlist.get(i).get("district");
@@ -126,8 +135,9 @@ public class LeftFragment extends Fragment implements AdapterView.OnItemClickLis
 
 
     /**
-     * 查询城市
-     * */
+     * 查询全国城市
+     * @param textCity
+     */
     private void queryCity(String textCity){
         mleftbutton.setVisibility(View.VISIBLE);
         mDataList.clear();
@@ -146,14 +156,16 @@ public class LeftFragment extends Fragment implements AdapterView.OnItemClickLis
         CURRENT_LEVEN = 1;
     }
 
-    /*查询省 直辖市*/
+    /**
+     * 查询省
+     */
     private void queryProvince() {
         leftlist_tv.setText(R.string.left_titlename);
         mDataList.clear();
         showDialog();
         mleftbutton.setVisibility(View.GONE);
         String JsonProvince = JsonFileReader.getJson(getActivity(),"location.txt");
-        mDataList = HandlerJson.getProvince(mDataList,JsonProvince, "result", "province");
+        mDataList = HandlerJson.getProvinceList(mDataList,JsonProvince, "result", "province");
         mAdapter.notifyDataSetChanged();
         CURRENT_LEVEN = 0;
         cancelDialog();

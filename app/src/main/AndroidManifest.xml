@@ -18,7 +18,8 @@
         </activity>
 
         <activity android:name=".activity.MainActivity"/>
-
+        <service android:name=".service.WeatherService"/>
+        <receiver android:name=".service.TimeRecivier"/>
     </application>
 
 </manifest>

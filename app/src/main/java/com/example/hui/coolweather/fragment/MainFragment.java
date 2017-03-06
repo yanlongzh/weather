@@ -99,7 +99,10 @@ public class MainFragment extends Fragment {
         exercise_advice=(TextView) view.findViewById(R.id.exercise_tv);
     };
 
-
+    /**
+     * 请求网络数据
+     * @param listText
+     */
     public void initData(final String listText) {
         String url ="http://api.jisuapi.com/weather/query?appkey=d4b8a9a7cb555e9f&city="+listText;
         HttpUtil.sendHttpRequst(url, new Callback() {
@@ -166,6 +169,12 @@ public class MainFragment extends Fragment {
         travel_advice.setText("感冒指数："+index.get(3).getDetail());
         exercise_advice.setText("锻炼建议："+index.get(1).getDetail());
     }
+
+    /**
+     * 格式化时间类
+     * @param time
+     * @return
+     */
     private String formatTime(String time){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat format1 = new SimpleDateFormat("HH:mm");
