@@ -1,1 +1,1 @@
-include ':app', ':UtilsSDK'
+include ':app'
